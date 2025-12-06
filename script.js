@@ -531,12 +531,35 @@ function syncToGoogleSheet() {
         body: JSON.stringify(payload)
     })
         .then(() => {
-            alert('Data sent to Google Sheet!');
+            showAlert('Data sent to Google Sheet!', 'success');
         })
         .catch(err => {
             console.error('Error syncing:', err);
-            alert('Failed to sync. Check console.');
+            showAlert('Failed to sync. Check console.', 'danger');
         });
+}
+
+function showAlert(message, type) {
+    const container = document.getElementById('alert-container');
+    if (!container) return; // Should exist if we are in reports view
+
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type}`;
+
+    // Choose icon
+    let icon = type === 'success' ? '<i class="fa-solid fa-check-circle"></i>' : '<i class="fa-solid fa-circle-exclamation"></i>';
+
+    alertDiv.innerHTML = `${icon} <span>${message}</span>`;
+
+    // Clear previous
+    container.innerHTML = '';
+    container.appendChild(alertDiv);
+
+    // Auto remove
+    setTimeout(() => {
+        alertDiv.style.opacity = '0';
+        setTimeout(() => alertDiv.remove(), 300);
+    }, 4000);
 }
 
 // Run
