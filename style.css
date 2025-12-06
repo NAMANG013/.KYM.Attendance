@@ -68,7 +68,7 @@ body {
 
 .admin-btn {
     position: absolute;
-    top: 1rem;
+    top: 6.4rem;
     right: 1rem;
     background: transparent;
     border: 1px solid var(--border);
@@ -273,6 +273,10 @@ main {
 
 .w-full {
     width: 100%;
+}
+
+.w-full:hover {
+    background-color: #1b345d;
 }
 
 .mt-2 {
@@ -703,4 +707,19 @@ main {
     background: var(--primary-light);
     padding: 0.5rem 0.75rem;
     border-radius: 12px;
+}
+
+/* Karyakar Header */
+.karyakar-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.karyakar-header h2 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
