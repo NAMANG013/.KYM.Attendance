@@ -1,524 +1,725 @@
-// State
-// Full 68 Members Data
-const defaultMembers = [
-    { id: 1, name: 'Aalok B. Patel', std: 'T.Y.', mobile: '8128625864', dob: '13/Jul/2004' },
-    { id: 2, name: 'Akshat J. Patel', std: '10', mobile: '9825634358', dob: '15/Apr/2010' },
-    { id: 3, name: 'Aaryan Gajjar', std: 'College', mobile: '7043156067', dob: '15/Sep/2003' },
-    { id: 4, name: 'Akash P. Nayak', std: '12', mobile: '7984410577', dob: '1/Sep/2007' },
-    { id: 5, name: 'Akshat P Patel', std: '12', mobile: '9723205242', dob: '28/Mar/2009' },
-    { id: 6, name: 'Bhavik S. Patel', std: '9', mobile: '9875213515', dob: '21/May/2011' },
-    { id: 7, name: 'Bhavesh Sen', std: 'B.Pham', mobile: '7016218283', dob: '22/Mar/2006' },
-    { id: 8, name: 'Dhairya B Patel', std: '12', mobile: '7990664547', dob: '7/Oct/2008' },
-    { id: 9, name: 'Dax S Patel', std: '9', mobile: '9924290245', dob: '1/May/2011' },
-    { id: 10, name: 'Dax A Patel', std: 'B COM', mobile: '9924693960', dob: '15/Sep/2008' },
-    { id: 11, name: 'Dev G Patel', std: '12', mobile: '7874388037', dob: '23/Apr/2009' },
-    { id: 12, name: 'Dev J Patel', std: '12', mobile: '9898904499', dob: '20/May/2009' },
-    { id: 13, name: 'Dharmik S Barot', std: '12', mobile: '9016757562', dob: '4/Nov/2008' },
-    { id: 14, name: 'Dev Patel', std: '—', mobile: '7600183947', dob: '—' },
-    { id: 15, name: 'Dev Gajjar', std: '—', mobile: '9726051332', dob: '26-May-03' },
-    { id: 16, name: 'Dharmik S Valand', std: '11', mobile: '9510423209', dob: '26/Jun/2009' },
-    { id: 17, name: 'Dhruvil Prajapati', std: '10', mobile: '9904016667', dob: '3/Oct/2010' },
-    { id: 18, name: 'Dipesh Patel', std: 'Job', mobile: '9712550675', dob: '30/Sep/1993' },
-    { id: 19, name: 'Harikrushna Patel', std: 'Job', mobile: '9824058234', dob: '7/Sep/1999' },
-    { id: 20, name: 'Harikrushna R Patel', std: 'T.Y.', mobile: '8320240696', dob: '30/Mar/2004' },
-    { id: 21, name: 'Harshil Valand', std: 'Deploma', mobile: '9499642919', dob: '8/Mar/2009' },
-    { id: 22, name: 'Het H Patel', std: '10', mobile: '9974543136', dob: '3/Jan/2010' },
-    { id: 23, name: 'Het M Patel', std: '10', mobile: '9824545982', dob: '20/May/2010' },
-    { id: 24, name: 'Jainam B Patel', std: '10', mobile: '9824563452', dob: '14/May/2009' },
-    { id: 25, name: 'Jay Patel', std: '11', mobile: '9909339898', dob: '16/Jan/2010' },
-    { id: 26, name: 'Jaymin Y Nayi', std: '10', mobile: '9924249583', dob: '1/Jun/2010' },
-    { id: 27, name: 'Jayur K Patel', std: '10', mobile: '9316201477', dob: '21/Mar/2009' },
-    { id: 28, name: 'Jit B Nayi', std: '12', mobile: '8758815803', dob: '19/Oct/2007' },
-    { id: 29, name: 'Ketul D Patel', std: '10', mobile: '9725239090', dob: '10/Oct/2009' },
-    { id: 30, name: 'Keyur B Patel', std: 'Job', mobile: '7990458423', dob: '9/May/1988' },
-    { id: 31, name: 'Kirtan P Patel', std: '10', mobile: '9909544410', dob: '13/Nov/2009' },
-    { id: 32, name: 'Maulik J Patel', std: 'Job', mobile: '9512502048', dob: '22/May/1999' },
-    { id: 33, name: 'Meet G Patel', std: '11', mobile: '9033048008', dob: '4/May/2009' },
-    { id: 34, name: 'Meet M Prajapati', std: 'Deploma', mobile: '9265231089', dob: '17/Dec/2008' },
-    { id: 35, name: 'Meet N Patel', std: '12', mobile: '9924162518', dob: '22/Feb/2008' },
-    { id: 36, name: 'Meet Patel', std: 'College', mobile: '9724029119', dob: '7/Oct/2007' },
-    { id: 37, name: 'Mihir B Patel', std: 'College', mobile: '7016408403', dob: '3/Sep/2005' },
-    { id: 38, name: 'Naman Gajjar', std: 'College', mobile: '9724335883', dob: '29/Sep/2006' },
-    { id: 39, name: 'Nayan G Panchal', std: 'T.Y.', mobile: '9898837957', dob: '8/Oct/2005' },
-    { id: 40, name: 'Palak N Patel', std: 'Job', mobile: '7878765782', dob: '8/May/1998' },
-    { id: 41, name: 'Purvang K Patel', std: 'College', mobile: '9998991677', dob: '3/Nov/2002' },
-    { id: 42, name: 'Prayush Prajapati', std: 'College', mobile: '6351691266', dob: '3/Oct/2004' },
-    { id: 43, name: 'Purvang M Prajapati', std: 'T.Y.', mobile: '7046630588', dob: '25/Oct/2003' },
-    { id: 44, name: 'Rushik Patel', std: 'C.A.', mobile: '8141956002', dob: '23/Aug/2001' },
-    { id: 45, name: 'Savan S Modi', std: 'College', mobile: '7265067042', dob: '7/Aug/2003' },
-    { id: 46, name: 'Sharad Patel', std: 'College', mobile: '9913124732', dob: '—' },
-    { id: 47, name: 'Smit R Patel', std: 'College', mobile: '9737401544', dob: '24/Jan/2004' },
-    { id: 48, name: 'Sneh G Patel', std: 'College', mobile: '8320200887', dob: '13/Jan/2005' },
-    { id: 49, name: 'Snehansh V Patel', std: '12', mobile: '8733077693', dob: '27/Jan/2009' },
-    { id: 50, name: 'Sumit B Prajapati', std: 'College', mobile: '9016958464', dob: '17/Oct/2002' },
-    { id: 51, name: 'Tapan A Patel', std: 'F.Y.', mobile: '9106527737', dob: '28/Mar/2005' },
-    { id: 52, name: 'Tilak A Patel', std: 'College', mobile: '8200199020', dob: '11/Aug/2005' },
-    { id: 53, name: 'Tirth Sanjaybhai P.', std: '10', mobile: '9727165594', dob: '16/Aug/2010' },
-    { id: 54, name: 'Tirth S Patel', std: '10', mobile: '9904969480', dob: '19/Jul/2010' },
-    { id: 55, name: 'Urvish R Patel', std: 'College', mobile: '8866685864', dob: '17/Dec/2002' },
-    { id: 56, name: 'Ved P Patel', std: 'B Pharm', mobile: '7990627282', dob: '1/May/2006' },
-    { id: 57, name: 'Vivek R Prajapati', std: 'Diploma', mobile: '9998726021', dob: '8/Aug/2007' },
-    { id: 58, name: 'Yannsh', std: '—', mobile: '9265602150', dob: '—' },
-    { id: 59, name: 'Yash A. Patel', std: 'Diploma', mobile: '9409997721', dob: '22/Aug/2007' },
-    { id: 60, name: 'Yash B. Patel', std: '10', mobile: '9537860957', dob: '26/Feb/2011' },
-    { id: 61, name: 'Yug B. Patel', std: '10', mobile: '9537860975', dob: '26/Feb/2011' }
-];
+:root {
+    /* Simple, Clean Blue Theme */
+    --primary: #3B82F6;
+    /* Standard Blue */
+    --primary-dark: #2563EB;
+    --primary-light: #EFF6FF;
+    /* Very light blue */
 
-// Always use defaultMembers as source of truth for structure, 
-// to ensure updates are reflected.
-let members = defaultMembers;
-localStorage.setItem('kym_members', JSON.stringify(members));
+    --secondary: #10B981;
+    /* Emerald for Success */
+    --danger: #EF4444;
+    /* Red for Error */
 
-let attendanceData = JSON.parse(localStorage.getItem('kym_attendance')) || {};
-let currentDate = new Date().toISOString().split('T')[0];
-let isAdmin = false;
-let activeSubTab = 'pending'; // 'pending' or 'completed'
+    --bg-body: #F3F4F6;
+    /* Soft Gray Background */
+    --bg-card: #FFFFFF;
 
-// Selectors
-const dateInput = document.getElementById('attendance-date');
-const attendanceList = document.getElementById('attendance-list');
-const attendanceSearch = document.getElementById('attendance-search');
-const showPendingBtn = document.getElementById('show-pending');
-const showCompletedBtn = document.getElementById('show-completed');
-const statsPresent = document.querySelector('.present-count');
-const statsAbsent = document.querySelector('.absent-count');
-const statsTotal = document.querySelector('.total-count');
+    --text-main: #1F2937;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+    /* Subtle Gray Border */
 
-// Admin Selectors
-const adminBtn = document.getElementById('admin-login-btn');
-const loginModal = document.getElementById('login-modal');
-const adminPasswordInput = document.getElementById('admin-password');
-const loginSubmit = document.getElementById('login-submit');
-const loginCancel = document.getElementById('login-cancel');
-const loginError = document.getElementById('login-error');
-const karyakarGrid = document.getElementById('karyakar-grid');
-const karyakarSearch = document.getElementById('karyakar-search');
-const historyLog = document.getElementById('history-log');
-const saveTodayBtn = document.getElementById('save-today');
-
-// Detail Modal Selectors
-const detailModal = document.getElementById('member-detail-modal');
-const closeDetail = document.getElementById('close-detail');
-const detailName = document.getElementById('detail-name');
-const detailStd = document.getElementById('detail-std');
-const detailMobile = document.getElementById('detail-mobile');
-const detailDob = document.getElementById('detail-dob');
-
-// Tabs
-const tabBtns = document.querySelectorAll('.tab-btn');
-const viewSections = document.querySelectorAll('.view-section');
-
-// Init
-function init() {
-    // Set Date
-    dateInput.value = currentDate;
-
-    // Default members are already set in variable declaration and saved to LS
-    // just to ensure they stick if user clears cache but not code.
-
-    // Event Listeners
-    setupTabs();
-    setupDatepicker();
-    setupActions();
-    setupSubTabs();
-    setupAdminActions();
-
-    // Render
-    renderAll();
-    renderHistory();
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --radius: 8px;
+    /* Standard radius, less bubbly */
 }
 
-function saveMembers() {
-    localStorage.setItem('kym_members', JSON.stringify(members));
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
-function saveAttendance() {
-    localStorage.setItem('kym_attendance', JSON.stringify(attendanceData));
-    updateStats();
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
 }
 
-function renderAll() {
-    renderAttendanceList();
-    updateStats();
-    if (isAdmin) renderKaryakarGrid();
+.app-container {
+    background-color: var(--bg-card);
+    width: 100%;
+    max-width: 480px;
+    /* Mobile focused */
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-// ------ UI Rendering ------
+/* Header */
+.app-header {
+    background: white;
+    color: var(--text-main);
+    /* Dark text on white */
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+    text-align: center;
+    position: relative;
+    border-radius: 0;
+    /* Remove rounded corners for header */
+}
 
-function renderAttendanceList(filterText = '') {
-    attendanceList.innerHTML = '';
+.admin-btn {
+    position: absolute;
+    top: 6.4rem;
+    right: 1rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    cursor: pointer;
+}
 
-    // Ensure date entry exists
-    if (!attendanceData[currentDate]) {
-        attendanceData[currentDate] = {};
+.logo-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.logo-area h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+/* Controls */
+.controls-section {
+    padding: 1rem;
+}
+
+.date-picker-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.date-picker-wrapper label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+input[type="date"] {
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    width: 100%;
+    background: var(--bg-body);
+}
+
+.stats-card {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.stat-item:not(:last-child) {
+    border-right: 1px solid var(--border);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.stat-value.present-count {
+    color: var(--secondary);
+}
+
+.stat-value.absent-count {
+    color: var(--danger);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    padding: 0 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    background: none;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background: var(--primary-light);
+    border-radius: 8px;
+}
+
+/* Content */
+main {
+    padding: 0 1rem 2rem;
+    flex: 1;
+}
+
+.view-section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.view-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
     }
 
-    // Filter members based on Search AND Sub-tab
-    const filteredMembers = members.filter(m => {
-        // Search Filter
-        if (!m.name.toLowerCase().includes(filterText.toLowerCase())) return false;
-
-        // Sub-tab Filter
-        const status = attendanceData[currentDate][m.id];
-        if (activeSubTab === 'pending') {
-            return !status; // Show if NO status
-        } else {
-            return status; // Show if HAS status (present or absent)
-        }
-    });
-
-    if (filteredMembers.length === 0) {
-        attendanceList.innerHTML = `
-            <div class="empty-state">
-                <i class="fa-solid fa-users"></i>
-                <p>No members in this list.</p>
-            </div>`;
-        return;
-    }
-
-    filteredMembers.forEach(member => {
-        // Status: 'present', 'absent', or undefined (default)
-        const status = attendanceData[currentDate][member.id];
-
-        const card = document.createElement('div');
-        card.className = `member-card ${status || ''}`;
-        card.innerHTML = `
-            <div class="member-info">
-                <div class="m-name">${member.name}</div>
-                <div class="m-uid">#${String(member.id).padStart(3, '0')}</div>
-            </div>
-            <div class="status-action">
-                <div class="toggle-status" onclick="toggleAttendance(${member.id})">
-                    ${getStatusIcon(status)}
-                </div>
-            </div>
-        `;
-        attendanceList.appendChild(card);
-    });
-}
-
-function getStatusIcon(status) {
-    if (status === 'present') return '<i class="fa-solid fa-check"></i>';
-    if (status === 'absent') return '<i class="fa-solid fa-xmark"></i>';
-    return '<i class="fa-regular fa-circle"></i>'; // Default/Unmarked state
-}
-
-function renderKaryakarGrid(filterText = '') {
-    karyakarGrid.innerHTML = '';
-
-    const filtered = members.filter(m => m.name.toLowerCase().includes(filterText.toLowerCase()));
-
-    filtered.forEach(member => {
-        const card = document.createElement('div');
-        card.className = 'k-card';
-        card.onclick = () => showMemberDetail(member);
-        card.innerHTML = `
-            <div class="k-avatar">
-                <i class="fa-solid fa-user"></i>
-            </div>
-            <div class="k-name">${member.name}</div>
-            <div class="k-sub">${member.std}</div>
-        `;
-        karyakarGrid.appendChild(card);
-    });
-}
-
-function showMemberDetail(member) {
-    detailName.textContent = member.name;
-    detailStd.textContent = member.std || '—';
-    detailMobile.textContent = member.mobile || '—';
-    detailDob.textContent = member.dob || '—';
-
-    detailModal.classList.add('open');
-}
-
-
-
-
-function renderHistory() {
-    if (!historyLog) return;
-    historyLog.innerHTML = '';
-
-    const dates = Object.keys(attendanceData).sort((a, b) => new Date(b) - new Date(a)); // Newest first
-
-    if (dates.length === 0) {
-        historyLog.innerHTML = '<li style="text-align:center; padding:1rem; color:var(--text-muted)">No history yet.</li>';
-        return;
-    }
-
-    dates.forEach(date => {
-        const dayRecords = attendanceData[date];
-        let p = 0;
-        let a = 0;
-        let t = members.length;
-
-        Object.values(dayRecords).forEach(val => {
-            if (val === 'present') p++;
-            if (val === 'absent') a++;
-        });
-
-        const li = document.createElement('li');
-        li.className = 'history-item';
-        li.innerHTML = `
-            <div>
-                <div class="h-date">${new Date(date).toDateString()}</div>
-                <div class="h-stats">${p} Present, ${a} Absent</div>
-            </div>
-            <div class="h-percent">${Math.round((p / t) * 100)}%</div>
-        `;
-        historyLog.appendChild(li);
-    });
-}
-
-
-function updateStats() {
-    if (!members.length) {
-        statsPresent.textContent = '0';
-        statsAbsent.textContent = '0';
-        statsTotal.textContent = '0';
-        return;
-    }
-
-    const currentRecords = attendanceData[currentDate] || {};
-    let present = 0;
-    let absent = 0;
-
-    Object.values(currentRecords).forEach(status => {
-        if (status === 'present') present++;
-        if (status === 'absent') absent++;
-    });
-
-    statsPresent.textContent = present;
-    statsAbsent.textContent = absent;
-    statsTotal.textContent = members.length;
-}
-
-// ------ Logic ------
-
-window.toggleAttendance = function (id) {
-    if (!attendanceData[currentDate]) attendanceData[currentDate] = {};
-
-    const currentStatus = attendanceData[currentDate][id];
-    let newStatus;
-
-    if (!currentStatus) newStatus = 'present';
-    else if (currentStatus === 'present') newStatus = 'absent';
-    else newStatus = null; // Reset to unmarked
-
-    if (newStatus) {
-        attendanceData[currentDate][id] = newStatus;
-    } else {
-        delete attendanceData[currentDate][id];
-    }
-
-    saveAttendance();
-    // If we are in 'pending' tab and mark someone, they should disappear
-    // If we are in 'completed' tab and unmark someone, they should disappear
-    // So re-rendering the list is key.
-    // So re-rendering the list is key.
-    renderAttendanceList(attendanceSearch ? attendanceSearch.value : '');
-
-    // Also update history if visible, or just wait for tab switch
-    if (document.getElementById('reports-view').classList.contains('active')) {
-        renderHistory();
-    }
-};
-
-
-// ------ Setup & Event Listeners ------
-
-function setupSubTabs() {
-    showPendingBtn.addEventListener('click', () => {
-        activeSubTab = 'pending';
-        showPendingBtn.classList.add('active');
-        showCompletedBtn.classList.remove('active');
-        renderAttendanceList(attendanceSearch.value);
-    });
-
-    showCompletedBtn.addEventListener('click', () => {
-        activeSubTab = 'completed';
-        showCompletedBtn.classList.add('active');
-        showPendingBtn.classList.remove('active');
-        renderAttendanceList(attendanceSearch.value);
-    });
-}
-
-function setupTabs() {
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active class from all
-            tabBtns.forEach(b => b.classList.remove('active'));
-            viewSections.forEach(s => s.classList.remove('active'));
-
-            // Add to clicked
-            btn.classList.add('active');
-            let tabId = btn.dataset.tab;
-            document.getElementById(`${tabId}-view`).classList.add('active');
-
-            // Special case for Karyakar tab if we add one later, 
-            // but currently it's accessed via admin button.
-            if (tabId === 'reports') {
-                renderHistory();
-            }
-        });
-    });
-}
-
-function setupDatepicker() {
-    dateInput.addEventListener('change', (e) => {
-        currentDate = e.target.value;
-        renderAttendanceList();
-        updateStats();
-    });
-}
-
-function setupActions() {
-    // Save Today
-    if (saveTodayBtn) {
-        saveTodayBtn.addEventListener('click', () => {
-            saveAttendance();
-            renderHistory();
-            syncToGoogleSheet();
-        });
-    }
-
-    // Mark All Present
-    document.getElementById('mark-all-present').addEventListener('click', () => {
-        if (!attendanceData[currentDate]) attendanceData[currentDate] = {};
-        members.forEach(m => {
-            attendanceData[currentDate][m.id] = 'present';
-        });
-        saveAttendance();
-        renderAttendanceList();
-    });
-
-    // Attendance Search
-    if (attendanceSearch) {
-        attendanceSearch.addEventListener('input', (e) => {
-            renderAttendanceList(e.target.value);
-        });
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-function setupAdminActions() {
-    // Open Login
-    adminBtn.addEventListener('click', () => {
-        if (isAdmin) {
-            // Already logged in, just show view
-            switchViewToKaryakar();
-        } else {
-            loginModal.classList.add('open');
-            adminPasswordInput.value = '';
-            loginError.textContent = '';
-            adminPasswordInput.focus();
-        }
-    });
-
-    // Login Submit
-    loginSubmit.addEventListener('click', attemptLogin);
-    adminPasswordInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') attemptLogin();
-    });
-
-    // Login Cancel
-    loginCancel.addEventListener('click', () => {
-        loginModal.classList.remove('open');
-    });
-
-    // Search
-    karyakarSearch.addEventListener('input', (e) => {
-        renderKaryakarGrid(e.target.value);
-    });
-
-    // Close Detail
-    closeDetail.addEventListener('click', () => {
-        detailModal.classList.remove('open');
-    });
-
-    // Close Modals on click outside
-    window.addEventListener('click', (e) => {
-        if (e.target === loginModal) loginModal.classList.remove('open');
-        if (e.target === detailModal) detailModal.classList.remove('open');
-    });
+/* Action Bar */
+.action-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
-function attemptLogin() {
-    const password = adminPasswordInput.value;
-    // Password updated to unique value
-    if (password === 'KYMGBHAI@2025') {
-        isAdmin = true;
-        loginModal.classList.remove('open');
-        switchViewToKaryakar();
-    } else {
-        loginError.textContent = 'Incorrect Password';
-    }
+/* Buttons */
+.btn {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: transform 0.1s;
 }
 
-function switchViewToKaryakar() {
-    // Hide other views
-    viewSections.forEach(s => s.classList.remove('active'));
-    tabBtns.forEach(b => b.classList.remove('active'));
+.btn:active {
+    transform: scale(0.98);
+}
 
-    // Show Karyakar
-    document.getElementById('karyakar-view').classList.add('active');
-    renderKaryakarGrid();
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+}
+
+.btn-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.w-full:hover {
+    background-color: #1b345d;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+/* Member List */
+.member-list,
+.manage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.member-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.member-card.present {
+    border-color: var(--secondary);
+    background-color: #ECFDF5;
+}
+
+.member-card.absent {
+    border-color: var(--danger);
+    background-color: #FEF2F2;
+}
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.m-name {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.m-uid {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: monospace;
+    opacity: 0.8;
+}
+
+.toggle-status {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    background: white;
+}
+
+.member-card.present .toggle-status {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    color: white;
+}
+
+.member-card.absent .toggle-status {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: white;
+}
+
+/* Simple list for Manage Members */
+.manage-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.delete-btn {
+    color: var(--danger);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+/* Add Member Form */
+.add-member-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.add-member-form input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
 
-
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-P3u77okxXYOie7PaS3jTgGOJ5QY6h1_hioU_nULeyc5-Chdjfd6QQaHk2mfUfzI/exec'; // User needs to replace this
-
-function syncToGoogleSheet() {
-    // Prepare Data
-    // We send data in a format the Google Script expects:
-    // { "data": [ [header], [row1], [row2] ... ] }
-
-    // 1. Headers
-    const dates = Object.keys(attendanceData).sort();
-    const headers = ['No', 'Name', 'STD', 'Mobile', 'DOB', ...dates];
-
-    // 2. Rows
-    const rows = members.map(member => {
-        const row = [
-            member.id,
-            member.name,
-            member.std,
-            member.mobile,
-            member.dob
-        ];
-
-        dates.forEach(date => {
-            const status = attendanceData[date]?.[member.id];
-            let cellValue = '-';
-            if (status === 'present') cellValue = 'P';
-            if (status === 'absent') cellValue = 'A';
-            row.push(cellValue);
-        });
-
-        return row;
-    });
-
-    const payload = {
-        data: [headers, ...rows]
-    };
-
-    // 3. Send
-    fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Important for Google Script
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    })
-        .then(() => {
-            alert('Data sent to Google Sheet!');
-        })
-        .catch(err => {
-            console.error('Error syncing:', err);
-            alert('Failed to sync. Check console.');
-        });
+/* Karyakar Grid */
+.karyakar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
-// Run
-init();
+.k-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.k-card:active {
+    transform: scale(0.95);
+}
+
+.k-avatar {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    margin: 0 auto 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+.k-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.k-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Modals */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    backdrop-filter: blur(4px);
+}
+
+.modal.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 320px;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.2s;
+    border: 1px solid var(--primary-light);
+}
+
+.modal-content h3 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    transition: border-color 0.2s;
+    background: var(--bg-body);
+    color: white;
+    /* Contrast issues? bg-body is orange.. wait. */
+    background: #FFF;
+    /* Input bg should be white */
+    color: var(--text-main);
+}
+
+.modal-content input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.modal.open .modal-content {
+    transform: translateY(0);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.error-text {
+    color: var(--danger);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    min-height: 1.2em;
+}
+
+/* Detail Modal */
+.detail-content {
+    text-align: center;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.detail-header {
+    margin-bottom: 1.5rem;
+}
+
+.detail-avatar {
+    width: 80px;
+    height: 80px;
+    background: #EEF2FF;
+    color: var(--primary);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.detail-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--bg-body);
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.info-row i {
+    color: var(--primary);
+    width: 20px;
+}
+
+.badge {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.search-bar {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border: 2px solid transparent;
+    background: white;
+    border-radius: 50px;
+    /* Pill shape */
+    font-size: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+    transform: translateY(-1px);
+}
+
+.search-bar input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* Sub Tabs */
+.sub-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1rem;
+    background: white;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.sub-tab-btn {
+    flex: 1;
+    border: none;
+    background: white;
+    padding: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+}
+
+.sub-tab-btn:last-child {
+    border-right: none;
+}
+
+.sub-tab-btn.active {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 600;
+    box-shadow: none;
+}
+
+/* History List */
+.history-list {
+    margin-top: 2rem;
+}
+
+.history-list h3 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: var(--text-main);
+}
+
+.history-item {
+    background: white;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s;
+}
+
+.history-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.h-date {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-main);
+}
+
+.h-stats {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+.h-percent {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+}
+
+/* Karyakar Header */
+.karyakar-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.karyakar-header h2 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
