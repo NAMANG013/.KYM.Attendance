@@ -62,8 +62,8 @@ const defaultMembers = [
     { id: 59, name: 'Yash A. Patel', std: 'Diploma', mobile: '9409997721', dob: '22/Aug/2007' },
     { id: 60, name: 'Yash B. Patel', std: '10', mobile: '9537860957', dob: '26/Feb/2011' },
     { id: 61, name: 'Yug B. Patel', std: '10', mobile: '9537860975', dob: '26/Feb/2011' },
-    { id: 62, name: 'demo', std: 'demo', mobile: 'demo', dob: 'demo' },
-    { id: 63, name: 'demo', std: 'demo', mobile: 'demo', dob: 'demo' }
+    { id: 62, name: 'demo-1', std: 'demo-1', mobile: 'demo-1', dob: 'demo-1' },
+    { id: 63, name: 'demo-2', std: 'demo-2', mobile: 'demo-2', dob: 'demo-2' }
 ];
 
 // Always use defaultMembers as source of truth for structure, 
