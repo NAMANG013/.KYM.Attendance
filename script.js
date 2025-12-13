@@ -62,8 +62,7 @@ const defaultMembers = [
     { id: 59, name: 'Yash A. Patel', std: 'Diploma', mobile: '9409997721', dob: '22/Aug/2007' },
     { id: 60, name: 'Yash B. Patel', std: '10', mobile: '9537860957', dob: '26/Feb/2011' },
     { id: 61, name: 'Yug B. Patel', std: '10', mobile: '9537860975', dob: '26/Feb/2011' },
-    { id: 62, name: 'demo-1', std: 'demo-1', mobile: 'demo-1', dob: 'demo-1' },
-    { id: 63, name: 'demo-2', std: 'demo-2', mobile: 'demo-2', dob: 'demo-2' }
+    { id: 62, name: 'demo', std: 'demo', mobile: 'demo', dob: 'demo' }
 ];
 
 // Always use defaultMembers as source of truth for structure, 
@@ -110,8 +109,17 @@ const detailDob = document.getElementById('detail-dob');
 const tabBtns = document.querySelectorAll('.tab-btn');
 const viewSections = document.querySelectorAll('.view-section');
 
+// Main Auth Selectors
+const mainOverlay = document.getElementById('main-login-overlay');
+const mainUser = document.getElementById('main-username');
+const mainPass = document.getElementById('main-password');
+const mainLoginBtn = document.getElementById('main-login-btn');
+const mainLoginError = document.getElementById('main-login-error');
+
 // Init
 function init() {
+    checkMainAuth();
+
     // Set Date
     dateInput.value = currentDate;
 
@@ -124,6 +132,7 @@ function init() {
     setupActions();
     setupSubTabs();
     setupAdminActions();
+    setupMainAuth();
 
     // Render
     renderAll();
@@ -562,6 +571,56 @@ function showAlert(message, type) {
         alertDiv.style.opacity = '0';
         setTimeout(() => alertDiv.remove(), 300);
     }, 4000);
+}
+
+// ------ Main Authentication ------
+
+function checkMainAuth() {
+    const isAuth = localStorage.getItem('kym_main_auth');
+    if (!isAuth) {
+        mainOverlay.classList.add('active');
+    }
+}
+
+function setupMainAuth() {
+    // Populate Dropdown
+    if (mainUser) {
+        // Only show Vivek R Prajapati as requested
+        const vivek = members.find(m => m.name === 'Vivek R Prajapati');
+        if (vivek) {
+            mainUser.innerHTML = `<option value="${vivek.name}">${vivek.name}</option>`;
+        }
+        // Default Selection
+        mainUser.value = 'Vivek R Prajapati';
+    }
+
+    if (mainLoginBtn) {
+        mainLoginBtn.addEventListener('click', attemptMainLogin);
+    }
+
+    // Allow enter key
+    if (mainPass) {
+        mainPass.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') attemptMainLogin();
+        });
+    }
+}
+
+function attemptMainLogin() {
+    const u = mainUser.value.trim();
+    const p = mainPass.value.trim();
+
+    // Hardcoded credentials as requested
+    // user: "Vivek R Prajapati"
+    // pass: "vivek@2026"
+
+    if (u === 'Vivek R Prajapati' && p === 'vivek@2026') {
+        localStorage.setItem('kym_main_auth', 'true');
+        mainOverlay.classList.remove('active');
+        mainLoginError.textContent = '';
+    } else {
+        mainLoginError.textContent = 'Invalid Username or Password';
+    }
 }
 
 // Run
