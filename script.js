@@ -461,17 +461,17 @@ function setupAdminActions() {
     });
 }
 
-// function attemptLogin() {
-//     const password = adminPasswordInput.value;
-//     // Password updated to unique value
-//     if (password === 'KYMGBHAI@2025') {
-//         isAdmin = true;
-//         loginModal.classList.remove('open');
-//         switchViewToKaryakar();
-//     } else {
-//         loginError.textContent = 'Incorrect Password';
-//     }
-// }
+function attemptLogin() {
+    const password = adminPasswordInput.value;
+    // Password updated to unique value
+    if (password === 'KYMGBHAI@2025') {
+        isAdmin = true;
+        loginModal.classList.remove('open');
+        switchViewToKaryakar();
+    } else {
+        loginError.textContent = 'Incorrect Password';
+    }
+}
 
 function switchViewToKaryakar() {
     // Hide other views
