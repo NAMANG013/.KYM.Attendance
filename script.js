@@ -496,7 +496,7 @@ function switchViewToKaryakar() {
 
 
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx-P3u77okxXYOie7PaS3jTgGOJ5QY6h1_hioU_nULeyc5-Chdjfd6QQaHk2mfUfzI/exec'; // User needs to replace this
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbypIvvdpgR9LuuikmpmAJN007k8EApQx3pfJTdHGJj7_OVlMFtFHA0lXvFZ2vBfYVpP/exec'; // User needs to replace this
 
 function syncToGoogleSheet() {
     // Prepare Data
@@ -625,3 +625,77 @@ function attemptMainLogin() {
 
 // Run
 init();
+
+// ------ Two-Way Sync Implementation ------
+
+function loadFromGoogleSheet() {
+    showAlert('Syncing from Google Sheet...', 'info');
+
+    fetch(GOOGLE_SCRIPT_URL)
+        .then(response => response.json())
+        .then(data => {
+            if (!data || data.length === 0) {
+                showAlert('No data found on server.', 'info');
+                return;
+            }
+
+            // Data format: 2D array [[Header1, Header2...], [Row1...], [Row2...]]
+            // Headers: ['No', 'Name', 'STD', 'Mobile', 'DOB', '2025-01-01', '2025-01-02'...]
+
+            const headers = data[0];
+            const rows = data.slice(1);
+
+            // Identify Date Columns (Indices 5 onwards based on current export logic)
+            // But let's be dynamic: Dates start after 'DOB'
+            const dobIndex = headers.indexOf('DOB');
+            const dateColumns = [];
+
+            if (dobIndex !== -1) {
+                for (let i = dobIndex + 1; i < headers.length; i++) {
+                    let headerVal = headers[i];
+                    // Handle case where Sheet returns Date object
+                    if (headerVal instanceof Date) {
+                        headerVal = headerVal.toISOString().split('T')[0];
+                    }
+                    dateColumns.push({ date: headerVal, index: i });
+                }
+            }
+
+            let newAttendanceData = {};
+
+            rows.forEach(row => {
+                const memberId = parseInt(row[0]); // Assuming ID is col 0
+                if (!memberId) return;
+
+                dateColumns.forEach(col => {
+                    const statusVal = row[col.index];
+                    const date = col.date;
+
+                    if (statusVal === 'P' || statusVal === 'A') {
+                        if (!newAttendanceData[date]) newAttendanceData[date] = {};
+
+                        if (statusVal === 'P') newAttendanceData[date][memberId] = 'present';
+                        if (statusVal === 'A') newAttendanceData[date][memberId] = 'absent';
+                    }
+                });
+            });
+
+            // Merge with local data (Server wins or Local wins? Let's say Server wins for history, but we keep local if server has nothing?)
+            // Actually, for a restore, we overwrite local history with server history.
+            attendanceData = newAttendanceData;
+            saveAttendance(); // Save to local storage
+
+            // Re-render
+            renderAll();
+            renderHistory();
+            showAlert('Data restored from Google Sheet!', 'success');
+        })
+        .catch(err => {
+            console.error('Error loading data:', err);
+            // Don't alert error aggressively on load, might be offline
+            // showAlert('Could not sync from server.', 'danger'); 
+        });
+}
+
+// Call on load
+loadFromGoogleSheet();
