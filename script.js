@@ -271,10 +271,10 @@ function renderHistory() {
         const li = document.createElement('li');
         li.className = 'history-item';
         li.innerHTML = `
-            < div >
+            <div>
                 <div class="h-date">${new Date(date).toDateString()}</div>
                 <div class="h-stats">${p} Present, ${a} Absent</div>
-            </div >
+            </div>
             <div class="h-percent">${Math.round((p / t) * 100)}%</div>
         `;
         historyLog.appendChild(li);
@@ -372,7 +372,7 @@ function setupTabs() {
             // Add to clicked
             btn.classList.add('active');
             let tabId = btn.dataset.tab;
-            document.getElementById(`${tabId} -view`).classList.add('active');
+            document.getElementById(`${tabId}-view`).classList.add('active');
 
             // Special case for Karyakar tab if we add one later, 
             // but currently it's accessed via admin button.
@@ -555,7 +555,7 @@ function showAlert(message, type) {
     if (!container) return; // Should exist if we are in reports view
 
     const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert - ${type} `;
+    alertDiv.className = `alert alert-${type}`;
 
     // Choose icon
     let icon = type === 'success' ? '<i class="fa-solid fa-check-circle"></i>' : '<i class="fa-solid fa-circle-exclamation"></i>';
@@ -588,12 +588,14 @@ function setupMainAuth() {
         // Only show Vivek R Prajapati as requested
         const vivek = members.find(m => m.name === 'Vivek R Prajapati');
         if (vivek) {
-            mainUser.innerHTML = `< option value = "${vivek.name}" > ${vivek.name}</option > `;
+            mainUser.innerHTML = `<option value="${vivek.name}">${vivek.name}</option>`;
         }
         // Default Selection
         mainUser.value = 'Vivek R Prajapati';
     }
 
+    
+    
     if (mainLoginBtn) {
         mainLoginBtn.addEventListener('click', attemptMainLogin);
     }
