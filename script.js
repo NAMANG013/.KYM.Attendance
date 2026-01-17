@@ -62,7 +62,8 @@ const defaultMembers = [
     { id: 59, name: 'Yash A. Patel', std: 'Diploma', mobile: '9409997721', dob: '22/Aug/2007' },
     { id: 60, name: 'Yash B. Patel', std: '10', mobile: '9537860957', dob: '26/Feb/2011' },
     { id: 61, name: 'Yug B. Patel', std: '10', mobile: '9537860975', dob: '26/Feb/2011' },
-    { id: 62, name: 'Dhruvin Prajapati', std: '11', mobile: '9909287967', dob: '10/03/2010' }
+    { id: 62, name: 'Dhruvin Prajapati', std: '11', mobile: '9909287967', dob: '10/03/2010' },
+    { id: 63, name: 'Aryan Patel', std: 'B.Pharm', mobile: '9274371391', dob: '28/09/2007' }
 ];
 
 // Always use defaultMembers as source of truth for structure, 
@@ -594,8 +595,8 @@ function setupMainAuth() {
         mainUser.value = 'Vivek R Prajapati';
     }
 
-    
-    
+
+
     if (mainLoginBtn) {
         mainLoginBtn.addEventListener('click', attemptMainLogin);
     }
