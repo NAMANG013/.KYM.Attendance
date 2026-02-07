@@ -63,7 +63,9 @@ const defaultMembers = [
     { id: 60, name: 'Yash B. Patel', std: '10', mobile: '9537860957', dob: '26/Feb/2011' },
     { id: 61, name: 'Yug B. Patel', std: '10', mobile: '9537860975', dob: '26/Feb/2011' },
     { id: 62, name: 'Dhruvin Prajapati', std: '11', mobile: '9909287967', dob: '10/03/2010' },
-    { id: 63, name: 'Aryan Patel', std: 'B.Pharm', mobile: '9274371391', dob: '28/09/2007' }
+    { id: 63, name: 'Vansh', std: '—', mobile: '—', dob: '—' },
+    { id: 64, name: 'Shaurya Patel', std: '—', mobile: '—', dob: '—' },
+    { id: 65, name: 'Prince', std: '—', mobile: '—', dob: '—' }
 ];
 
 // Always use defaultMembers as source of truth for structure, 
@@ -272,10 +274,10 @@ function renderHistory() {
         const li = document.createElement('li');
         li.className = 'history-item';
         li.innerHTML = `
-            <div>
+            < div >
                 <div class="h-date">${new Date(date).toDateString()}</div>
                 <div class="h-stats">${p} Present, ${a} Absent</div>
-            </div>
+            </div >
             <div class="h-percent">${Math.round((p / t) * 100)}%</div>
         `;
         historyLog.appendChild(li);
@@ -373,7 +375,7 @@ function setupTabs() {
             // Add to clicked
             btn.classList.add('active');
             let tabId = btn.dataset.tab;
-            document.getElementById(`${tabId}-view`).classList.add('active');
+            document.getElementById(`${tabId} -view`).classList.add('active');
 
             // Special case for Karyakar tab if we add one later, 
             // but currently it's accessed via admin button.
@@ -556,7 +558,7 @@ function showAlert(message, type) {
     if (!container) return; // Should exist if we are in reports view
 
     const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type}`;
+    alertDiv.className = `alert alert - ${type} `;
 
     // Choose icon
     let icon = type === 'success' ? '<i class="fa-solid fa-check-circle"></i>' : '<i class="fa-solid fa-circle-exclamation"></i>';
@@ -589,13 +591,11 @@ function setupMainAuth() {
         // Only show Vivek R Prajapati as requested
         const vivek = members.find(m => m.name === 'Vivek R Prajapati');
         if (vivek) {
-            mainUser.innerHTML = `<option value="${vivek.name}">${vivek.name}</option>`;
+            mainUser.innerHTML = `< option value = "${vivek.name}" > ${vivek.name}</option > `;
         }
         // Default Selection
         mainUser.value = 'Vivek R Prajapati';
     }
-
-
 
     if (mainLoginBtn) {
         mainLoginBtn.addEventListener('click', attemptMainLogin);
