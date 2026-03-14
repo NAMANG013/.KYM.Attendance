@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -12,7 +13,14 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <!-- Filled Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <!-- Brand Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+
 </head>
+
 <body>
 
   <!-- Firebase config modal (bottom sheet) -->
@@ -25,13 +33,14 @@
         → Project Settings → Your Apps.
       </p>
       <form class="config-form" id="config-form">
-        <input class="config-input" id="cfg-apiKey"            type="text" placeholder="apiKey *"  required />
-        <input class="config-input" id="cfg-authDomain"        type="text" placeholder="authDomain" />
-        <input class="config-input" id="cfg-databaseURL"       type="text" placeholder="databaseURL * (https://...)" required />
-        <input class="config-input" id="cfg-projectId"         type="text" placeholder="projectId" />
-        <input class="config-input" id="cfg-storageBucket"     type="text" placeholder="storageBucket" />
+        <input class="config-input" id="cfg-apiKey" type="text" placeholder="apiKey *" required />
+        <input class="config-input" id="cfg-authDomain" type="text" placeholder="authDomain" />
+        <input class="config-input" id="cfg-databaseURL" type="text" placeholder="databaseURL * (https://...)"
+          required />
+        <input class="config-input" id="cfg-projectId" type="text" placeholder="projectId" />
+        <input class="config-input" id="cfg-storageBucket" type="text" placeholder="storageBucket" />
         <input class="config-input" id="cfg-messagingSenderId" type="text" placeholder="messagingSenderId" />
-        <input class="config-input" id="cfg-appId"             type="text" placeholder="appId" />
+        <input class="config-input" id="cfg-appId" type="text" placeholder="appId" />
         <div class="modal-btn-row">
           <button class="btn btn-primary" type="submit">🔗 Connect</button>
           <button class="btn btn-secondary" type="button" id="dismiss-modal-btn">Cancel</button>
@@ -43,8 +52,7 @@
   <!-- Header -->
   <header class="app-header">
     <div class="logo">
-      <div class="logo-icon">📋</div>
-      <div class="logo-text">Kalolyouvak<span>Mandal</span></div>
+      <div class="logo-text">Youvak <span> Mandal</span></div>
     </div>
     <div class="header-status">
       <div class="status-dot" id="status-dot"></div>
@@ -57,10 +65,15 @@
 
     <!-- ── MEMBERS (list only) ── -->
     <section class="section active" id="section-members">
-      <div class="section-label">All Members · <span id="member-count">0</span></div>
+      <div class="section-label" style="display:flex; justify-content:space-between; align-items:center;">
+        <span>All Members · <span id="member-count">0</span></span>
+      </div>
+      <div class="form-group" style="margin-bottom: 12px;">
+        <input type="text" id="member-search" placeholder="Search members..." autocomplete="off" />
+      </div>
       <div class="member-list" id="member-list">
         <div class="empty-state">
-          <div class="empty-icon">👥</div>
+          <div class="empty-icon"><i class="bx bx-user" style="color:var(--text);"></i></div>
           <p>No members yet.<br>Tap ➕ below to add a member.</p>
         </div>
       </div>
@@ -95,15 +108,20 @@
         <div class="card-title">Select Date</div>
         <input type="date" class="event-selector" id="att-date-picker" />
         <div class="bulk-row" style="margin-top:10px">
-          <button class="btn btn-secondary btn-sm" id="mark-all-present">✅ All Present</button>
-          <button class="btn btn-secondary btn-sm" id="mark-all-absent">❌ All Absent</button>
+          <button class="btn btn-secondary btn-sm" id="mark-all-present">All Present</button>
+          <button class="btn btn-secondary btn-sm" id="mark-all-absent">All Absent</button>
         </div>
       </div>
 
       <div class="stats-bar" id="att-stats"></div>
+
+      <div class="form-group" style="margin-bottom: 12px;">
+        <input type="text" id="attendance-search" placeholder="Search members..." autocomplete="off" />
+      </div>
+
       <div class="attendance-list" id="attendance-list">
         <div class="empty-state">
-          <div class="empty-icon">📅</div>
+          <div class="empty-icon"><i class="bx bx-calendar" style="color:var(--text);"></i></div>
           <p>Pick a date above to mark attendance.</p>
         </div>
       </div>
@@ -115,11 +133,14 @@
         <div class="card-title">Filter by Date</div>
         <div class="form-group" style="margin-bottom:10px">
           <label for="report-date-pick">Date</label>
-          <input type="date" id="report-date-pick" style="background:var(--input);border:1px solid var(--border);border-radius:8px;padding:11px 12px;color:var(--text);font-size:16px;width:100%;outline:none;" />
+          <input type="date" id="report-date-pick"
+            style="background:var(--input);border:1px solid var(--border);border-radius:8px;padding:11px 12px;color:var(--text);font-size:16px;width:100%;outline:none;" />
         </div>
         <div class="report-btn-row" style="margin-bottom:0">
-          <button class="btn btn-primary" id="generate-report-btn">📊 Generate</button>
-          <button class="btn btn-secondary" id="export-report-btn">⬇️ CSV</button>
+          <button class="btn btn-primary" id="generate-report-btn">Generate <i class="bx bx-file-report"
+              style="color:#ffffff;"></i></button>
+          <button class="btn btn-secondary" id="export-report-btn">Download CSV <i class="bx bx-arrow-to-bottom"
+              style="color:#ffffff;"></i></button>
         </div>
       </div>
 
@@ -129,7 +150,7 @@
 
       <div id="report-wrap">
         <div class="empty-state">
-          <div class="empty-icon">📊</div>
+          <div class="empty-icon"><i class="bx bx-file-report" style="color:var(--text);"></i></div>
           <p>Pick a date and tap Generate.</p>
         </div>
       </div>
@@ -140,24 +161,21 @@
   <!-- Bottom nav (3 tabs) -->
   <nav class="bottom-nav">
     <button class="nav-tab active" data-tab="members">
-      <span class="nav-icon">👥</span>
-      Members
+      <span class="nav-icon"><i class="bx bx-user" style="color:#ffffff;"></i></span>
     </button>
     <button class="nav-tab" data-tab="add">
-      <span class="nav-icon">➕</span>
-      Add
+      <span class="nav-icon"><i class="bx bx-plus" style="color:#ffffff;"></i></span>
     </button>
     <button class="nav-tab" data-tab="attendance">
-      <span class="nav-icon">✅</span>
-      Attendance
+      <span class="nav-icon"><i class="bx bx-arrow-in-down-right-square" style="color:#ffffff;"></i></span>
     </button>
     <button class="nav-tab" data-tab="report">
-      <span class="nav-icon">📊</span>
-      Report
+      <span class="nav-icon"><i class="bx bx-file-report" style="color:#ffffff;"></i></span>
     </button>
   </nav>
 
   <div class="toast-container" id="toast-container"></div>
   <script src="app.js"></script>
 </body>
+
 </html>
