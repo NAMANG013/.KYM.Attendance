@@ -6,14 +6,14 @@
 
 // ── FIREBASE CONFIG ──
 const DEFAULT_CONFIG = {
-  apiKey:            "AIzaSyB1sbIH5QSKjBggetUBHIvlE-wg-mRN5N8",
-  authDomain:        "kalolyouvakmandaldata.firebaseapp.com",
-  databaseURL:       "https://kalolyouvakmandaldata-default-rtdb.firebaseio.com",
-  projectId:         "kalolyouvakmandaldata",
-  storageBucket:     "kalolyouvakmandaldata.firebasestorage.app",
+  apiKey: "AIzaSyB1sbIH5QSKjBggetUBHIvlE-wg-mRN5N8",
+  authDomain: "kalolyouvakmandaldata.firebaseapp.com",
+  databaseURL: "https://kalolyouvakmandaldata-default-rtdb.firebaseio.com",
+  projectId: "kalolyouvakmandaldata",
+  storageBucket: "kalolyouvakmandaldata.firebasestorage.app",
   messagingSenderId: "737809672101",
-  appId:             "1:737809672101:web:33c53dd73a4a9fca262a4c",
-  measurementId:     "G-HD59WMWS4H"
+  appId: "1:737809672101:web:33c53dd73a4a9fca262a4c",
+  measurementId: "G-HD59WMWS4H"
 };
 
 // Global state
@@ -43,8 +43,8 @@ function escHtml(str) {
 function formatDate(dateStr) {
   if (!dateStr) return '';
   const [y, m, d] = dateStr.split('-');
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return `${parseInt(d)} ${months[parseInt(m,10)-1]} ${y}`;
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${parseInt(d)} ${months[parseInt(m, 10) - 1]} ${y}`;
 }
 
 function today() {
@@ -90,9 +90,19 @@ function listenToData() {
 $('add-member-form').addEventListener('submit', async e => {
   e.preventDefault();
   if (!db) return toast('Firebase not connected.', 'error');
-  const name  = $('member-name').value.trim();
+
+  const name = $('member-name').value.trim();
   const phone = $('member-phone').value.trim();
+
   if (!name) return toast('Name is required.', 'warning');
+
+  // Validate for duplicates
+  const existingMembers = Object.values(members);
+  const nameExists = existingMembers.some(m => m.name.toLowerCase() === name.toLowerCase());
+  const phoneExists = phone && existingMembers.some(m => m.phone === phone);
+
+  if (nameExists) return toast(`Member with name "${name}" already exists!`, 'error');
+  if (phoneExists) return toast(`Phone number ${phone} is already registered!`, 'error');
 
   const btn = $('add-member-btn');
   btn.disabled = true;
@@ -102,7 +112,7 @@ $('add-member-form').addEventListener('submit', async e => {
     $('add-member-form').reset();
     toast(`${name} added!`);
     switchTab('members'); // go back to list
-  } catch(e) {
+  } catch (e) {
     toast('Error: ' + e.message, 'error');
   } finally {
     btn.disabled = false;
@@ -110,20 +120,52 @@ $('add-member-form').addEventListener('submit', async e => {
   }
 });
 
+// Add global search states
+let memberSearchQuery = '';
+let attendanceSearchQuery = '';
+
+// Add event listeners for search inputs
+document.addEventListener('DOMContentLoaded', () => {
+  const memberSearch = $('member-search');
+  if (memberSearch) {
+    memberSearch.addEventListener('input', (e) => {
+      memberSearchQuery = e.target.value.toLowerCase();
+      renderMembers();
+    });
+  }
+
+  const attendanceSearch = $('attendance-search');
+  if (attendanceSearch) {
+    attendanceSearch.addEventListener('input', (e) => {
+      attendanceSearchQuery = e.target.value.toLowerCase();
+      if (currentDate) renderAttendanceList(currentDate);
+    });
+  }
+});
+
 function renderMembers() {
-  const list  = $('member-list');
+  const list = $('member-list');
   const addList = $('add-member-list'); // Get the new list container in the add panel
   const count = $('member-count');
   const addCount = $('add-member-count'); // Get the new count container
-  const keys  = Object.keys(members);
-  
+
+  // Filter keys based on search query
+  let keys = Object.keys(members);
+
   count.textContent = keys.length;
-  if(addCount) addCount.textContent = keys.length;
+  if (addCount) addCount.textContent = keys.length;
+
+  if (memberSearchQuery) {
+    keys = keys.filter(id => members[id].name.toLowerCase().includes(memberSearchQuery));
+  }
+
+  count.textContent = keys.length;
+  if (addCount) addCount.textContent = keys.length;
 
   if (keys.length === 0) {
-    const emptyHtml = `<div class="empty-state"><div class="empty-icon">👥</div><p>No members yet.<br>Add your first member above.</p></div>`;
+    const emptyHtml = `<div class="empty-state"><i class="bx bx-user-plus" style="font-size:30px;"></i><p>No members yet.<br>Add your first member above.</p></div>`;
     list.innerHTML = emptyHtml;
-    if(addList) addList.innerHTML = emptyHtml;
+    if (addList) addList.innerHTML = emptyHtml;
     return;
   }
 
@@ -137,15 +179,15 @@ function renderMembers() {
       </div>
     </div>`;
   }).join('');
-  
+
   // Generate HTML for the list in the add panel (WITH delete button)
-  if(addList) {
+  if (addList) {
     addList.innerHTML = keys.map(id => {
       const m = members[id];
       return `<div class="member-card">
         <div class="member-info">
           <div class="member-name">${escHtml(m.name)}</div>
-          <div class="member-phone">${m.phone ? '📱 ' + escHtml(m.phone) : 'No phone'}</div>
+          <div class="member-phone">${m.phone ? ' ' + escHtml(m.phone) : 'No phone'}</div>
         </div>
         <button class="btn btn-danger btn-sm" onclick="promptDeleteMember('${id}','${escHtml(m.name)}', this)">🗑</button>
       </div>`;
@@ -166,7 +208,7 @@ function promptDeleteMember(id, name, btn) {
     btn.innerHTML = 'Sure? ⚠️';
     btn.style.background = 'var(--red)';
     btn.style.color = '#fff';
-    
+
     // Reset after 3 seconds
     setTimeout(() => {
       if (pendingDeleteId === id) {
@@ -192,36 +234,36 @@ async function executeDeleteMember(id, name) {
     });
     if (Object.keys(updates).length) await db.ref().update(updates);
     toast(`${name} removed.`);
-  } catch(e) { toast('Error: ' + e.message, 'error'); }
+  } catch (e) { toast('Error: ' + e.message, 'error'); }
 }
 
 // =============================================
 // ── ATTENDANCE (date-based) ──
 // =============================================
-$('att-date-picker').addEventListener('change', function() {
+$('att-date-picker').addEventListener('change', function () {
   currentDate = this.value;
   if (currentDate) renderAttendanceList(currentDate);
 });
 
 function renderAttendanceList(date) {
-  const list     = $('attendance-list');
+  const list = $('attendance-list');
   const statsBar = $('att-stats');
-  const memberKeys = Object.keys(members);
+  let memberKeys = Object.keys(members);
 
   if (memberKeys.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="empty-icon">👥</div><p>Add members first from the Members tab.</p></div>`;
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="bx bx-user-plus" style="color:var(--text);font-size:30px; opacity:0.5"></i></div><p>Add members first from the Members tab.</p></div>`;
     statsBar.innerHTML = '';
     return;
   }
 
   const att = (attendance[date] || {});
 
-  // Stats
+  // Stats (Calculate total stats regardless of search filter)
   let present = 0, absent = 0, notMarked = 0;
   memberKeys.forEach(mid => {
-    if      (att[mid] === 'present') present++;
-    else if (att[mid] === 'absent')  absent++;
-    else                              notMarked++;
+    if (att[mid] === 'present') present++;
+    else if (att[mid] === 'absent') absent++;
+    else notMarked++;
   });
 
   statsBar.innerHTML = `
@@ -230,10 +272,20 @@ function renderAttendanceList(date) {
     <div class="stat-chip blue"><span class="val">${notMarked}</span>Pending</div>
   `;
 
+  // Filter keys based on search query for display only
+  if (attendanceSearchQuery) {
+    memberKeys = memberKeys.filter(mid => members[mid].name.toLowerCase().includes(attendanceSearchQuery));
+  }
+
+  if (memberKeys.length === 0 && attendanceSearchQuery) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="bx bx-search" style="color:var(--text);"></i></div><p>No members match your search.</p></div>`;
+    return;
+  }
+
   list.innerHTML = memberKeys.map(mid => {
     const m = members[mid];
     const initials = m.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-    const status   = att[mid] || '';
+    const status = att[mid] || '';
     return `<div class="attendance-row">
       <div class="attendance-member">
         <div class="member-avatar" style="width:36px;height:36px;font-size:13px">${initials}</div>
@@ -259,12 +311,12 @@ async function markAtt(date, memberId, status) {
     if (!attendance[date]) attendance[date] = {};
     attendance[date][memberId] = status;
     renderAttendanceList(date);
-  } catch(e) { toast('Error: ' + e.message, 'error'); }
+  } catch (e) { toast('Error: ' + e.message, 'error'); }
 }
 
 $('mark-all-present').addEventListener('click', async () => {
   if (!currentDate) return toast('Pick a date first.', 'warning');
-  if (!db)          return toast('Not connected.', 'error');
+  if (!db) return toast('Not connected.', 'error');
   const updates = {};
   Object.keys(members).forEach(mid => {
     updates[`attendance/${currentDate}/${mid}`] = 'present';
@@ -275,7 +327,7 @@ $('mark-all-present').addEventListener('click', async () => {
 
 $('mark-all-absent').addEventListener('click', async () => {
   if (!currentDate) return toast('Pick a date first.', 'warning');
-  if (!db)          return toast('Not connected.', 'error');
+  if (!db) return toast('Not connected.', 'error');
   const updates = {};
   Object.keys(members).forEach(mid => {
     updates[`attendance/${currentDate}/${mid}`] = 'absent';
@@ -287,7 +339,7 @@ $('mark-all-absent').addEventListener('click', async () => {
 // =============================================
 // ── REPORTS ──
 // =============================================
-$('report-date-pick').addEventListener('change', function() {
+$('report-date-pick').addEventListener('change', function () {
   if (this.value) generateReport(this.value);
 });
 
@@ -304,16 +356,16 @@ function generateReport(date) {
   const memberKeys = Object.keys(members);
 
   if (memberKeys.length === 0) {
-    wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">👥</div><p>No members found.</p></div>`;
+    wrap.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="bx bx-user-plus" style="color:var(--text);font-size:30px; opacity:0.5"></i></div><p>No Data found.</p></div>`;
     return;
   }
 
   const att = (attendance[date] || {});
   let present = 0, absent = 0, notMarked = 0;
   memberKeys.forEach(mid => {
-    if      (att[mid] === 'present') present++;
-    else if (att[mid] === 'absent')  absent++;
-    else                              notMarked++;
+    if (att[mid] === 'present') present++;
+    else if (att[mid] === 'absent') absent++;
+    else notMarked++;
   });
 
   const statsHtml = `<div class="stats-bar">
@@ -325,13 +377,13 @@ function generateReport(date) {
   const dateLabel = `<div class="section-label" style="margin-bottom:8px">📅 ${formatDate(date)}</div>`;
 
   let tbody = memberKeys.map((mid, i) => {
-    const m  = members[mid];
+    const m = members[mid];
     const st = att[mid];
     const badge = st === 'present'
       ? `<span class="badge badge-present">Present</span>`
       : st === 'absent'
-      ? `<span class="badge badge-absent">Absent</span>`
-      : `<span class="badge badge-na">—</span>`;
+        ? `<span class="badge badge-absent">Absent</span>`
+        : `<span class="badge badge-na">—</span>`;
     return `<tr>
       <td>${i + 1}</td>
       <td>${escHtml(m.name)}</td>
@@ -357,14 +409,14 @@ function exportCSV() {
   const att = (attendance[date] || {});
   let csv = `Date,Member Name,Phone,Status\n`;
   memberKeys.forEach(mid => {
-    const m  = members[mid];
+    const m = members[mid];
     const st = att[mid] || 'Not Marked';
     csv += `"${date}","${m.name}","${m.phone || ''}","${st}"\n`;
   });
 
   const blob = new Blob([csv], { type: 'text/csv' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
   a.href = url;
   a.download = `attendance-${date}.csv`;
   a.click();
@@ -394,13 +446,13 @@ document.querySelectorAll('.nav-tab').forEach(btn => {
 $('config-form').addEventListener('submit', e => {
   e.preventDefault();
   const config = {
-    apiKey:            $('cfg-apiKey').value.trim(),
-    authDomain:        $('cfg-authDomain').value.trim(),
-    databaseURL:       $('cfg-databaseURL').value.trim(),
-    projectId:         $('cfg-projectId').value.trim(),
-    storageBucket:     $('cfg-storageBucket').value.trim(),
+    apiKey: $('cfg-apiKey').value.trim(),
+    authDomain: $('cfg-authDomain').value.trim(),
+    databaseURL: $('cfg-databaseURL').value.trim(),
+    projectId: $('cfg-projectId').value.trim(),
+    storageBucket: $('cfg-storageBucket').value.trim(),
     messagingSenderId: $('cfg-messagingSenderId').value.trim(),
-    appId:             $('cfg-appId').value.trim(),
+    appId: $('cfg-appId').value.trim(),
   };
   if (!config.apiKey || !config.databaseURL) {
     return toast('API Key and Database URL required.', 'error');
@@ -427,7 +479,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Default dates to today
   const t = today();
-  $('att-date-picker').value  = t;
+  $('att-date-picker').value = t;
   $('report-date-pick').value = t;
   currentDate = t;
 
